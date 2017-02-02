@@ -47,7 +47,6 @@ public class RabbitQueryMsgGateway implements QueryMessageGateway {
 					logger.debug("Message sent to notification queue: " + correlationData.toString());
 				}
 				else {
-					//https://git.umms.med.umich.edu/CCI/fusion/issues/20
 					logger.error("RabbitQueryMsgGateway failed to send message to job queue, retry: " + cause);
 					this.rabbitTemplate.convertAndSend(this.exchangeName, pm.getRoutingKey(), pm.getPayload(), pm);
 				}
@@ -56,7 +55,6 @@ public class RabbitQueryMsgGateway implements QueryMessageGateway {
 	}
 	@Override
 	public void sendQuery(String routingKey, QueryMessage query) {
-		//https://git.umms.med.umich.edu/CCI/fusion/issues/20
 		this.rabbitTemplate.convertAndSend(this.exchangeName, routingKey, query, new PendingMessage<QueryMessage>(String.format("%d:%d:%d", query.getTaskId(), query.getJobId(), query.getJobCount()), routingKey, query));
 	}
 
